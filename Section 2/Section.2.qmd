@@ -1,0 +1,79 @@
+---
+title: "Section 2: Basics"
+format: html
+---
+
+
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+theme_set(theme_minimal())
+penguins <- penguins
+
+## single quantitative frequency plot
+ggplot(data = penguins, aes(x = bill_length_mm)) +
+  geom_freqpoly() 
+
+## facet plot
+ggplot(data = penguins, aes(x = bill_length_mm)) +
+  geom_histogram(colour = "black", fill = "white", bins = 15) +
+  facet_wrap(~ species)
+
+## use of <STAT> 
+ggplot(data = penguins, aes(x = species)) +
+  geom_bar(stat = "count") ## don't need stat = "count" because it's the default. (could instead just use geom_col)
+
+penguins_sum <- penguins |> group_by(species) |>
+  summarise(count = n()) 
+ggplot(data = penguins_sum, aes(x = species, y = count)) + geom_bar(stat = "identity")
+
+## use of <POSITION> 
+penguins_nomiss <- penguins |>
+  na.omit() ## gets rid of any row with NA
+## penguins _nomiss <- penguins |>
+##  filter(!is.na(sex))
+
+ggplot(data = penguins_nomiss, aes(x = species, fill = sex)) +
+  geom_bar(position = "dodge") + ## don't need "stack" because it's default
+  scale_fill_viridis_d()
+
+```
+
+## Class Exercises
+
+# Exercise 1.
+```{r}
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(stat = "identity", position = "identity") + facet_null() + coord_cartesian()
+```
+
+
+## Your Turn Exercises
+
+# Your Turn 1.
+```{r}
+ggplot(data = penguins, aes(x = bill_length_mm)) + geom_density()
+```
+
+# Your Turn 2. 
+```{r}
+ggplot(data = penguins, aes(x = sex, y = flipper_length_mm)) + geom_col()
+```
+
+# Your Turn 3.
+```{r}
+#a. 
+ggplot(data = penguins, aes(x = bill_depth_mm)) + geom_freqpoly(colour = "chocolate1")
+
+#b.
+ggplot(data = penguins, aes(x = body_mass_g, colour = species)) + geom_freqpoly()
+```
+
+# Your Turn 6.
+```{r}
+ggplot(data = penguins, aes(x = bill_length_mm, y = flipper_length_mm)) + geom_point(position = "stack")
+ggplot(data = penguins, aes(x = bill_length_mm, y = flipper_length_mm)) + geom_point(position = "identity")
+```
+
+

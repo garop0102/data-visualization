@@ -1,0 +1,19 @@
+---
+title: "2.1-Data Visualization Concepts"
+author: "Gop Arop"
+format: 
+  html:
+    embed-resources: true
+---
+
+1. Using the income/voter turnout graph as an example, its valuable to look at data graphically so it'll be easier to identify outliers.
+
+2. For something that is as serious as the life expectancy of an individual, there seems to be too much artistic style to the graph. 
+
+3. People might be more likely to forget the about entirely about the graph. Also, it might be more cognitively difficult to read than graphs that have a smaller data-to-ink ratio. 
+
+4. The authors mean that you need a reference point that doesn't change, if you want to make comparisons for different categories. It's easier to read the category closest to the x-axis but is more difficult to read the other 3 categories. 
+
+5. Try to find a good data-to-ink ratio, avoid having graphs that are too complex. 
+
+6. What's the more important element to have in your visualization, one that is  aesthetically pleasing or one that communicates data well?

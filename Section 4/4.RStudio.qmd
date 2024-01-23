@@ -1,0 +1,21 @@
+---
+title: "4.1-RStudio"
+author: "Gop Arop"
+format: 
+  html:
+    embed-resources: true
+---
+
+a. Gop Arop - Junior
+b. Major: Data Science - Minor: Mathematics
+c. Because I think learning more about plots and when to make them will help me in the long term.
+d. STAT 234 was Fall 23' and STAT 213 was Spring 23'
+e. Yes
+f. I've used Git in CS 219 and for my summer fellowship project. 
+g. Yes
+h. Syracuse, NY, USA
+i. I played basketball on the Men's team last semester but injuries kept me out. So now I play intramural. 
+j. My favorite movie is Batman Begins. 
+k. I just recently learned how to cook chicken fried rice.
+l. To pass and hopefully retain the skills I learned from this class. 
+
