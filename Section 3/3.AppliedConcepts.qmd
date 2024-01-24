@@ -1,0 +1,23 @@
+---
+title: "Section 3: Applied Concepts"
+author: "Gop Arop"
+format: 
+  html:
+    embed-resources: true
+---
+
+1. Hue is the simply the color, or the dominant wavelength. While intensity refers to the brightness of the color. 
+
+2. One scenario where you'd want to use a sequential color scale is when plotting a heat map. A situation where a diverging color scale is suitable could be designing a visual where participants can only choose one of two outcomes. An example of an unordered color scale in use could be a visual representation of five different school majors, each assigned a distinct color.
+
+3. In Figure 1.21, an instance of one gestalt inference taking precedence over another can be observed in the bottom right plot, where the lines joining the shapes create a perception of common fate, leading to the two shapes being perceived as a cohesive unit despite gaps in the line segments.
+
+4. The results in Figure 1.23 suggest that charts leveraging length and position-based visual attributes demonstrate superior performance. This implies that the specific visual attributes of length and position contribute to the effectiveness of conveying information about a single categorical variable, favoring chart types that employ these characteristics.
+
+5. I'd opt for using different colors instead of shapes. According to Figure 1.25, colors are more effective than shapes for distinguishing unordered categorical data, which could provide a clearer visual representation of the relationship across the three countries.
+
+6. A time where the use of the left-side of Figure 1.27 would be helpful would be when trying to make an argument that significantly less people are going to law school. On the contrary, a time where the right-side of Figure 1.27 would also be helpful in showing that less people go to law school. However, there will be less of an emphasis on the rapid decline.
+
+7. There are three main categories of problems with data visualization: aesthetic, substantive, and perceptual. Also, graphs that are ineffective can be due to poor aesthetics, poor data presentation , or perceptual issues. 
+ 
+8. What are the key points that an individual engaged in everyday data visualization work should ensure before submitting their work?
