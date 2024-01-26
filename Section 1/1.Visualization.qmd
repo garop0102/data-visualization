@@ -1,0 +1,157 @@
+---
+title: "Section 1: Choosing a Visualization"
+author: "Gop Arop"
+format: 
+  html:
+    embed-resources: true
+---
+
+```{r}
+library(tidyverse)
+library(carData)
+Salaries <- Salaries |> as_tibble() |>
+  mutate(salary = salary / 1000)
+theme_set(theme_minimal())
+Salaries
+```
+
+
+## 1.2.2 Categorical
+```{r}
+# Option 1 - Lollipop Plot
+salaries_sum <- Salaries |> group_by(rank) |>
+  summarise(n = n()) |>
+  mutate(prop = n / sum(n))
+ggplot(data = salaries_sum, aes(x = rank, y = n)) +
+  geom_segment(aes(xend = rank, y = 0, yend = n),
+               colour = "mediumpurple1") +
+  geom_point(colour = "mediumpurple4") +
+  labs(title = "Lollipop Plot")
+
+# Option 2 - Bar Plot of Proportions
+ggplot(data = salaries_sum, aes(x = rank, y = prop)) +
+  geom_col(colour = "mediumpurple4", fill = "mediumpurple1") +
+  labs(title = "Bar Plot of Proportions")
+
+# Option 3 - Pie Chart
+ggplot(data = salaries_sum, aes(x = "", y = n, fill = rank)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") + scale_fill_viridis_d() +
+  theme_void() +
+  labs(title = "Pie Chart")
+```
+
+
+## 1.3.1 Quantitative and Categorical
+```{r}
+# Option 1 - Colored Frequency Plot
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_freqpoly(aes(colour = discipline)) +
+  scale_colour_viridis_d() +
+  labs(title = "Coloured Frequency Plots")
+
+# Option 2 - Faceted Histograms
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_histogram(colour = "black", fill = "white") +
+  facet_wrap(~discipline, ncol = 1) +
+  labs(title = "Faceted Histograms")
+
+# Option 3 - Colored Density Plot
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_density(aes(fill = discipline, colour = discipline), alpha = 0.50) +
+  scale_fill_viridis_d() + scale_colour_viridis_d() +
+  labs(title = "Coloured Density Plots")
+
+# Option 4 - Strip Plot
+ggplot(data = Salaries, aes(x = discipline, y = salary)) +
+  geom_jitter(width = 0.15) +
+  labs(title = "Strip Plot")
+
+# Option 5 - Bar Plot of Median
+salary_med <- Salaries |> group_by(discipline) |>
+  summarise(med_sal = median(salary))
+## as discussed in handout, this is a horrible way to visualize this data!
+ggplot(salary_med, aes(x = discipline, y = med_sal)) +
+  geom_col(colour = "mediumpurple4", fill = "mediumpurple1") +
+  labs(title = "Bar Plot of Median", y = "Median Salary")
+
+# Option 6 - Beeswarm Plot
+library(ggbeeswarm)
+ggplot(data = Salaries, aes(x = discipline, y = salary)) +
+  geom_beeswarm() +
+  labs(title = "Beeswarm Plot")
+```
+
+
+## 1.3.2 Two Categorical
+```{r}
+# Option 1 - Stacked Bar Plot
+ggplot(data = Salaries, aes(x = discipline, fill = sex)) +
+  geom_bar() +
+  scale_fill_viridis_d() +
+  labs(title = "Stacked Bar Plot")
+
+# Option 2 - Stacked Proportional Bar Plot
+ggplot(data = Salaries, aes(x = discipline, fill = sex)) +
+  geom_bar(position = "fill") +
+  scale_fill_viridis_d() +
+  labs(title = "Stacked Proportional Bar Plot")
+
+# Option 3 - Side-by-Side Bar Plot
+ggplot(data = Salaries, aes(x = discipline, fill = sex)) +
+  geom_bar(position = "dodge") +
+  scale_fill_viridis_d() +
+  labs(title = "Side-by-Side Bar Plot")
+
+# Option 4 - Heat Map
+salaries_heat <- Salaries |> group_by(discipline, sex) |>
+  summarise(n = n())
+ggplot(data = salaries_heat, aes(x = discipline, y = sex, fill = n)) +
+  geom_tile() + scale_fill_viridis_c() +
+  labs(title = "Heat Map")
+
+```
+
+
+
+## 1.4.1 Two Quantitative and One Categorical
+
+```{r}
+# Option 1 - Color by 3rd Variable
+ggplot(data = Salaries, aes(x = yrs.service, y = salary)) +
+  geom_point(aes(colour = sex)) +
+  geom_smooth(aes(colour = sex)) +
+  scale_colour_viridis_d() +
+  labs(title = "Colour by Third Variable")
+
+# Option 2 - Facet by 3rd Variable
+ggplot(data = Salaries, aes(x = yrs.service, y = salary)) +
+  geom_point() +
+  facet_wrap(~ sex) +
+  geom_smooth() +
+  labs(title = "Facet by Third Variable")
+```
+
+
+## 1.4.2 Two Categorical and One Quantitative
+
+```{r}
+# Option 1 - Facet by 2 Variables
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_histogram(colour = "black", fill = "white") +
+  facet_grid(discipline ~ rank) +
+  labs(title = "Facet by Two Variables")
+
+# Option 2 - Facet by One Variable, Color by One Variable
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_freqpoly(aes(colour = discipline), bins = 15) +
+  facet_wrap(~ rank) +
+  scale_colour_viridis_d() +
+  labs(title = "Facet by One Variable, Colour by One Variable")
+```
+
+
+
+
+
+
