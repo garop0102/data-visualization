@@ -70,6 +70,15 @@ ggplot(data = penguins, aes(x = bill_depth_mm)) + geom_freqpoly(colour = "chocol
 ggplot(data = penguins, aes(x = body_mass_g, colour = species)) + geom_freqpoly()
 ```
 
+# Your Turn 4.
+```{r}
+# a.
+ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm)) + geom_point(aes(colour = species)) + geom_smooth()
+
+# b.
+ggplot(data = penguins, aes(x = body_mass_g, y = bill_length_mm)) + geom_point() + geom_smooth(aes(colour = species))
+```
+
 # Your Turn 6.
 ```{r}
 ggplot(data = penguins, aes(x = bill_length_mm, y = flipper_length_mm)) + geom_point(position = "stack")
