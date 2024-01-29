@@ -1,0 +1,249 @@
+---
+title: "5 DATA/STAT 234 Review"
+author: "Gop Arop"
+format: 
+  html:
+    embed-resources: true
+    warning: false
+---
+
+## 5.1 Review with HPI Data (Class Prep)
+```{r}
+library(tidyverse)
+library(here)
+library(ggrepel)
+theme_set(theme_minimal())
+hpi_df <- read_csv(here("data/hpi-tidy.csv"))
+```
+
+### 5.1.1 Making a Scatterplot and Labeling Points
+```{r}
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point()
+
+# Change to label specific observation (US in this case)
+hpi_us <- hpi_df |> filter(Country == "United States of America")
+hpi_us
+
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  geom_text(data = hpi_us, aes(label = Country)) ## specify
+
+# Change to use ggrepel and circle labeled point
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  geom_text_repel(data = hpi_us, aes(label = Country)) +
+  geom_point(data = hpi_us, size = 3, shape = 1)
+```
+
+### 5.1.2 Themes and Labels
+```{r}
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  geom_text_repel(data = hpi_us, aes(label = Country)) +
+  geom_point(data = hpi_us, size = 3, shape = 1) +
+  labs(title = "Countries with a Higher Ecological Footprint Tend to Have \nCitizens with Higher Wellbeing", ## add title
+    subtitle = "Wellbeing is on a 1-10 scale", ## add subtitle (smaller text size than the title)
+    caption = "Data Source: http://happyplanetindex.org/countries", ## add caption to the bottom of the figure
+    x = "Ecological Footprint", ## change x axis label
+    y = "Wellbeing") + theme_light() ## change y axis label
+```
+
+### 5.1 Exercises
+
+Exercise 1.
+
+- mutate() - Useful for creating new variables that incorporate old variables in any fashion.
+- arrange() - Useful for sorting rows of a particular variable you choose.
+- select() - Selects the specified column(s). 
+- slice() - Allows for selection of row(s).
+- filter() - Keeps rows that meet the condition given. 
+- group_by() - Grouping function that puts variables into specified groups. 
+- summarise() - Returns a data frame that holds a row for each group. 
+
+Exercise 2.
+```{r}
+hpi_df <- hpi_df |>
+  mutate(WF_ratio = Wellbeing / Footprint)
+```
+
+Exercise 3.
+```{r}
+hpi_df <- hpi_df |>
+  mutate(Age = case_when(LifeExpectancy >= 80 & LifeExpectancy < 90 ~ "80s", 
+                         LifeExpectancy >= 70 & LifeExpectancy < 80 ~ "70s",
+                         LifeExpectancy < 70 ~ "Below 70"))
+```
+
+Exercise 4.
+```{r}
+hpi_df |>
+  arrange(desc(LifeExpectancy))
+```
+
+Exercise 5.
+```{r}
+hpi_df |>
+  select(Country, LifeExpectancy)
+```
+
+Exercise 6.
+```{r}
+hpi_df |>
+  slice(1:5)
+```
+
+Exercise 7.
+```{r}
+hpi_df |>
+  filter(Region == "Western World")
+```
+
+Exercise 8.
+```{r}
+hpi_df |>
+  filter(LifeExpectancy < 55)
+```
+
+Exercise 9.
+```{r}
+hpi_df |>
+  group_by(Region) |>
+  summarise(Countries = n())
+```
+
+Exercise 10.
+```{r}
+hpi_df |>
+  group_by(Region) |>
+  summarise(MaxLifeExp = max(LifeExpectancy))
+```
+
+
+## 5.2 More Review with Billboard Hot 100
+```{r}
+library(billboard)
+head(wiki_hot_100s)        
+wiki_hot_100s <- wiki_hot_100s |>
+  separate_rows(artist, sep = ' and ') |>
+  separate_rows(artist, sep = ' featuring ') |>
+  separate_rows(artist, sep = ' with ') |>
+  separate_rows(artist, sep = ', ')
+```
+
+Exercise 2.
+```{r}
+hot100s_popularity <- wiki_hot_100s |>
+  group_by(artist) |>
+  filter(year >= 2000 & year < 2010) |>
+  summarise(popularity = n()) |>
+  arrange(desc(popularity)) |> 
+  mutate(artist = fct_reorder(.f = artist, .x = popularity)) |>
+  slice(1:20)
+
+tail(hot100s_popularity)
+
+ggplot(data = hot100s_popularity, aes(x = artist,
+                                      y = popularity)) + geom_segment(aes(x = artist, xend = artist, y = 0, yend = popularity), color = "skyblue") +
+  geom_point(color = "blue", size = 4, alpha = 0.6) +
+  coord_flip() +
+  theme_minimal()
+```
+
+
+
+## 5.3 Your Turn
+```{r}
+library(rvest)
+library(tidyverse)
+
+## function to scrape data from wikipedia for a particular year
+get_wiki_100 <- function(year) {
+  
+  ## same code as before, replacing 2017 with year.
+  url <- paste0("https://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_", year)
+  
+  h <- read_html(url)
+  
+  tab <- h |> html_nodes("table")
+  df <- tab[[1]] |> html_table() |>
+    mutate(year = year)
+  
+  ## tell our function to return the dataframe `df`
+  return(df) 
+}
+
+## apply the function to the following years
+library(purrr)
+year_list <- list(2017, 2018, 2019, 2020, 2021)
+
+df_all <- purrr::map(year_list, get_wiki_100)
+
+## combine the data frames
+df_2017_present <- bind_rows(df_all)
+df_2017_present <- df_2017_present |>
+  mutate(Title = str_remove_all(Title, pattern = "\"")) |> ## get rid of \ in title
+  rename(no = No., 
+         title = Title, 
+         artist = `Artist(s)`) ## make column names match with billboard package
+
+wiki_tibble <- as_tibble(wiki_hot_100s) |> ## convert billboard data to tibble
+  mutate(year = as.numeric(year),
+         no = as.integer(no)) ## change variable types to match with scraped data
+
+hot100_df <- bind_rows(wiki_tibble, df_2017_present)
+hot100_df
+```
+
+Exercise 1.
+```{r}
+hot100_df <- hot100_df |>
+  separate_rows(artist, sep = ' and ') |>
+  separate_rows(artist, sep = ' featuring ') |>
+  separate_rows(artist, sep = ' with ') |>
+  separate_rows(artist, sep = ', ')
+
+hot100_pop <- hot100_df |>
+  group_by(artist) |>
+  filter(year >= 2010 & year < 2020) |>
+  summarise(popularity = n()) |>
+  arrange(desc(popularity)) |> 
+  mutate(artist = fct_reorder(.f = artist, .x = popularity)) |>
+  slice(1:20)
+
+ggplot(data = hot100_pop, aes(x = artist, y = popularity)) + 
+  geom_segment(aes(x = artist, xend = artist, y = 0, yend = popularity), color = "black") +
+  geom_point(color = "darkorange", size = 5, alpha = 2) +
+  coord_flip() +
+  theme_light()
+```
+
+Exercise 2.
+```{r include=FALSE}
+library(tidyverse)
+library(readxl)
+library(here)
+df <- read_excel(here::here("data/slu_graduates_17_23.xlsx"))
+
+## fixes error in the data
+df <- df |> mutate(across(everything(),
+                          .fns = ~replace(., . ==  "STATS" , "STAT")))
+```
+
+```{r}
+gender <- df |>
+  group_by(major1,sex) |>
+  summarise(num = n())
+
+ggplot(data = gender, aes(x = num)) +
+  geom_freqpoly(aes(colour = sex), bins = 15) +
+  facet_wrap(~ major1)
+```
+
+
+
+
+
+
+
+
