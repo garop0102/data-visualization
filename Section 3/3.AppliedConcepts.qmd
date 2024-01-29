@@ -7,26 +7,27 @@ format:
 ---
 
 ## Class Prep
-1. Hue is the simply the color, or the dominant wavelength. While intensity refers to the brightness of the color. 
 
-2. One scenario where you'd want to use a sequential color scale is when plotting a heat map. A situation where a diverging color scale is suitable could be designing a visual where participants can only choose one of two outcomes. An example of an unordered color scale in use could be a visual representation of five different school majors, each assigned a distinct color.
+1.  Hue is the simply the color, or the dominant wavelength. While intensity refers to the brightness of the color.
 
-3. In Figure 1.21, an instance of one gestalt inference taking precedence over another can be observed in the bottom right plot, where the lines joining the shapes create a perception of common fate, leading to the two shapes being perceived as a cohesive unit despite gaps in the line segments.
+2.  One scenario where you'd want to use a sequential color scale is when plotting a heat map. A situation where a diverging color scale is suitable could be designing a visual where participants can only choose one of two outcomes. An example of an unordered color scale in use could be a visual representation of five different school majors, each assigned a distinct color.
 
-4. The results in Figure 1.23 suggest that charts leveraging length and position-based visual attributes demonstrate superior performance. This implies that the specific visual attributes of length and position contribute to the effectiveness of conveying information about a single categorical variable, favoring chart types that employ these characteristics.
+3.  In Figure 1.21, an instance of one gestalt inference taking precedence over another can be observed in the bottom right plot, where the lines joining the shapes create a perception of common fate, leading to the two shapes being perceived as a cohesive unit despite gaps in the line segments.
 
-5. I'd opt for using different colors instead of shapes. According to Figure 1.25, colors are more effective than shapes for distinguishing unordered categorical data, which could provide a clearer visual representation of the relationship across the three countries.
+4.  The results in Figure 1.23 suggest that charts leveraging length and position-based visual attributes demonstrate superior performance. This implies that the specific visual attributes of length and position contribute to the effectiveness of conveying information about a single categorical variable, favoring chart types that employ these characteristics.
 
-6. A time where the use of the left-side of Figure 1.27 would be helpful would be when trying to make an argument that significantly less people are going to law school. On the contrary, a time where the right-side of Figure 1.27 would also be helpful in showing that less people go to law school. However, there will be less of an emphasis on the rapid decline.
+5.  I'd opt for using different colors instead of shapes. According to Figure 1.25, colors are more effective than shapes for distinguishing unordered categorical data, which could provide a clearer visual representation of the relationship across the three countries.
 
-7. There are three main categories of problems with data visualization: aesthetic, substantive, and perceptual. Also, graphs that are ineffective can be due to poor aesthetics, poor data presentation , or perceptual issues. 
- 
-8. What are the key points that an individual engaged in everyday data visualization work should ensure before submitting their work?
+6.  A time where the use of the left-side of Figure 1.27 would be helpful would be when trying to make an argument that significantly less people are going to law school. On the contrary, a time where the right-side of Figure 1.27 would also be helpful in showing that less people go to law school. However, there will be less of an emphasis on the rapid decline.
 
+7.  There are three main categories of problems with data visualization: aesthetic, substantive, and perceptual. Also, graphs that are ineffective can be due to poor aesthetics, poor data presentation , or perceptual issues.
+
+8.  What are the key points that an individual engaged in everyday data visualization work should ensure before submitting their work?
 
 ## 3.2 Examples
 
 # Example 1.
+
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
@@ -47,9 +48,11 @@ ggplot(data = penguins_sum, aes(x = year, y = n_penguins,
   theme_minimal() +
   scale_colour_viridis_d()
 ```
-1. Line plot overall more preferable because it's harder to see trends in the species of penguins that are not the Gentoo species (which is the baseline, not on a stable baseline).
 
-# Example 2. 
+1.  Line plot overall more preferable because it's harder to see trends in the species of penguins that are not the Gentoo species (which is the baseline, not on a stable baseline).
+
+# Example 2.
+
 ```{r}
 ggplot(data = penguins, aes(x = species)) +
   geom_bar(fill = "darkslategray4") +
@@ -60,9 +63,11 @@ ggplot(data = penguins, aes(x = species)) +
   coord_cartesian(ylim = c(50, 160)) +
   theme_minimal()
 ```
-2. The first plot is more preferable because, if our visualization encodes area of length, the y-axis should start at 0.
+
+2.  The first plot is more preferable because, if our visualization encodes area of length, the y-axis should start at 0.
 
 # Example 3.
+
 ```{r}
 library(ggbeeswarm)
 ggplot(data = penguins, aes(x = species, y = body_mass_g)) +
@@ -74,9 +79,11 @@ ggplot(data = penguins, aes(x = species, y = body_mass_g)) +
   theme_minimal() +
   ylim(c(0, 6500))
 ```
-3. First is more preferable because including 0 as a y limit for this type of graph gives alot of wasted space. 
+
+3.  First is more preferable because including 0 as a y limit for this type of graph gives alot of wasted space.
 
 # Example 4.
+
 ```{r}
 ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(colour = species)) +
@@ -88,9 +95,11 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   facet_wrap( ~ species) +
   theme_minimal() 
 ```
-4. The first is preferable because it better utilizes the position of points so we can easily see which species has high vs. low bill depths, etc. 
+
+4.  The first is preferable because it better utilizes the position of points so we can easily see which species has high vs. low bill depths, etc.
 
 # Example 5.
+
 ```{r}
 penguins <- penguins |> mutate(species_island_sex = interaction(species, 
                                                                 island,
@@ -108,9 +117,11 @@ ggplot(data = penguins |> filter(!is.na(sex)),
   facet_wrap(~ species_island_sex) +
   theme_minimal()
 ```
-5. The second one is more preferable because its hard for humans to accurately perceive 10 different color shades. 
+
+5.  The second one is more preferable because its hard for humans to accurately perceive 10 different color shades.
 
 # Revision of Example 5.
+
 ```{r}
 ggplot(data = penguins |> filter(!is.na(sex)), aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(colour = sex, shape = species)) +
@@ -119,20 +130,24 @@ ggplot(data = penguins |> filter(!is.na(sex)), aes(x = bill_length_mm, y = bill_
 ```
 
 # Example 5.
-The bar plot is stronger because it effectively uses position of the bars while the areas of the pie chart does not. 
+
+The bar plot is stronger because it effectively uses position of the bars while the areas of the pie chart does not.
 
 # Example 6.
-In the first, its easier to distinguish the region while the second has a higher data to ink ratio. 
+
+In the first, its easier to distinguish the region while the second has a higher data to ink ratio.
 
 ## Your Turn 1
 
-# Exercise 1.
-a. You would use a sequential color scale
-b. You would use a diverging color scale
-c. You would use a qualitative color scale
-d. You would use a diverging color scale
+### Exercise 1.
 
-# Exercise 2.
+a.  You would use a sequential color scale
+b.  You would use a diverging color scale
+c.  You would use a qualitative color scale
+d.  You would use a diverging color scale
+
+### Exercise 2.
+
 ```{r}
 ggplot(data = penguins |> filter(!is.na(sex)), aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(colour = sex)) + scale_color_viridis_d() ## d is for discrete variables
@@ -143,6 +158,24 @@ ggplot(data = penguins |> filter(!is.na(sex)), aes(x = bill_length_mm, y = bill_
 ggplot(data = penguins |> filter(!is.na(sex)), aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point(aes(colour = body_mass_g)) + scale_color_viridis_b() ## b is for binning a continuous graph
 ```
+
+### Exericse 3.
+
+```{r}
+library(here)
+hpi_df <- read_csv(here("data/hpi-tidy.csv"))
+hpi_extreme <- hpi_df |>
+  arrange(desc(HappyPlanetIndex)) |>
+  slice(1:10, (nrow(hpi_df) - 9):nrow(hpi_df)) |>
+  mutate(Country = fct_reorder(Country, HappyPlanetIndex))
+```
+
+```{r}
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing, colour = Region)) +
+  geom_point() + theme_dark(base_size = 6, base_family = "AppleGothic") + theme(aspect.ratio = 3, plot.background = element_rect(fill = "yellow"))
+```
+
+
 
 
 

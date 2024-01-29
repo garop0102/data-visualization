@@ -8,6 +8,7 @@ format:
 ---
 
 ## 5.1 Review with HPI Data (Class Prep)
+
 ```{r}
 library(tidyverse)
 library(here)
@@ -17,6 +18,7 @@ hpi_df <- read_csv(here("data/hpi-tidy.csv"))
 ```
 
 ### 5.1.1 Making a Scatterplot and Labeling Points
+
 ```{r}
 ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
   geom_point()
@@ -37,6 +39,7 @@ ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
 ```
 
 ### 5.1.2 Themes and Labels
+
 ```{r}
 ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
   geom_point() +
@@ -53,21 +56,23 @@ ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
 
 Exercise 1.
 
-- mutate() - Useful for creating new variables that incorporate old variables in any fashion.
-- arrange() - Useful for sorting rows of a particular variable you choose.
-- select() - Selects the specified column(s). 
-- slice() - Allows for selection of row(s).
-- filter() - Keeps rows that meet the condition given. 
-- group_by() - Grouping function that puts variables into specified groups. 
-- summarise() - Returns a data frame that holds a row for each group. 
+-   mutate() - Useful for creating new variables that incorporate old variables in any fashion.
+-   arrange() - Useful for sorting rows of a particular variable you choose.
+-   select() - Selects the specified column(s).
+-   slice() - Allows for selection of row(s).
+-   filter() - Keeps rows that meet the condition given.
+-   group_by() - Grouping function that puts variables into specified groups.
+-   summarise() - Returns a data frame that holds a row for each group.
 
 Exercise 2.
+
 ```{r}
 hpi_df <- hpi_df |>
   mutate(WF_ratio = Wellbeing / Footprint)
 ```
 
 Exercise 3.
+
 ```{r}
 hpi_df <- hpi_df |>
   mutate(Age = case_when(LifeExpectancy >= 80 & LifeExpectancy < 90 ~ "80s", 
@@ -76,36 +81,42 @@ hpi_df <- hpi_df |>
 ```
 
 Exercise 4.
+
 ```{r}
 hpi_df |>
   arrange(desc(LifeExpectancy))
 ```
 
 Exercise 5.
+
 ```{r}
 hpi_df |>
   select(Country, LifeExpectancy)
 ```
 
 Exercise 6.
+
 ```{r}
 hpi_df |>
   slice(1:5)
 ```
 
 Exercise 7.
+
 ```{r}
 hpi_df |>
   filter(Region == "Western World")
 ```
 
 Exercise 8.
+
 ```{r}
 hpi_df |>
   filter(LifeExpectancy < 55)
 ```
 
 Exercise 9.
+
 ```{r}
 hpi_df |>
   group_by(Region) |>
@@ -113,14 +124,15 @@ hpi_df |>
 ```
 
 Exercise 10.
+
 ```{r}
 hpi_df |>
   group_by(Region) |>
   summarise(MaxLifeExp = max(LifeExpectancy))
 ```
 
-
 ## 5.2 More Review with Billboard Hot 100
+
 ```{r}
 library(billboard)
 head(wiki_hot_100s)        
@@ -132,6 +144,7 @@ wiki_hot_100s <- wiki_hot_100s |>
 ```
 
 Exercise 2.
+
 ```{r}
 hot100s_popularity <- wiki_hot_100s |>
   group_by(artist) |>
@@ -150,9 +163,8 @@ ggplot(data = hot100s_popularity, aes(x = artist,
   theme_minimal()
 ```
 
-
-
 ## 5.3 Your Turn
+
 ```{r}
 library(rvest)
 library(tidyverse)
@@ -196,6 +208,7 @@ hot100_df
 ```
 
 Exercise 1.
+
 ```{r}
 hot100_df <- hot100_df |>
   separate_rows(artist, sep = ' and ') |>
@@ -219,6 +232,7 @@ ggplot(data = hot100_pop, aes(x = artist, y = popularity)) +
 ```
 
 Exercise 2.
+
 ```{r include=FALSE}
 library(tidyverse)
 library(readxl)
@@ -231,19 +245,31 @@ df <- df |> mutate(across(everything(),
 ```
 
 ```{r}
+library(ggrepel)
 gender <- df |>
-  group_by(major1,sex) |>
-  summarise(num = n())
+  select(-starts_with("minor")) |>
+  pivot_longer(starts_with("major"), names_to = "major_num", values_to = "major") |>  
+  filter(!is.na(major)) |>
+  ## group_by(sex,major) |>
+  ## summarise(n_majors = n()) |>
+  ## ungroup() |>
+  ## pivot_wider(names_from = sex, values_from = n_majors) |>
+  ## mutate(prop_male = M / (`F` + M))
+  mutate(male_ind = if_else(sex == "M", 1 , 0)) |>
+  group_by(major) |>
+  summarise(prop_male = sum(male_ind) / n() , size = n()) |>
+  filter(size > 75) |>
+  arrange(desc(prop_male)) |> 
+  mutate(major = fct_reorder(.f = major, .x = prop_male))
 
-ggplot(data = gender, aes(x = num)) +
-  geom_freqpoly(aes(colour = sex), bins = 15) +
-  facet_wrap(~ major1)
+math_cs_s <- gender |>
+  filter(major %in% c("CS", "STAT", "MATH"))
+
+ggplot(data = gender, aes(x = major, y = prop_male)) + 
+  geom_segment(aes(x = major, xend = major, y = 0, yend = prop_male), color = "darkgreen", size = 0.85) +
+  geom_point(color = "yellow", size = 5, alpha = 2) + 
+  geom_segment(data = math_cs_s, aes(xend = major, y = 0, yend = prop_male), colour = "hotpink", size = 1.5) + 
+  coord_flip() +
+  theme(axis.text.x = element_text(size = 15)) + labs(caption = "Data Source: SLU Institutional Research Office")
+
 ```
-
-
-
-
-
-
-
-
