@@ -1,0 +1,59 @@
+---
+title: "Take-Home Assessment 1"
+author: "Gop Arop"
+format: 
+  html:
+    embed-resources: true
+---
+
+Statement of Integrity: “All work presented is my own, and I have followed all rules for collaboration. If I used any AI on this assignment, I have clearly stated both (1) what my search prompt was and (2) what I used from the AI answer.” - Gop Arop
+
+
+## Question 1.
+
+The category group that had the easiest overall trend to see over time is Group 5. Group 5 is the closest to the x-axis. However, the x-axis doesn't have a stable baseline, which is why the other categorical groups are harder to interept. 
+
+## Question 2.
+
+### a. 
+We should use a diverging color scale in this scenario.
+
+### b.
+We should use a sequential color scale in this scenario. 
+
+## Question 3.
+
+### a. 
+
+I would probably use a bar plot. 
+
+### b.
+The graph would tell me how the scores were distribution among the students. 
+
+## Question 4. 
+
+### Pair 1.
+The `<STAT>` parameter is different between the two graphs. 
+
+### Pair 2.
+
+The `<COORDINATE_FUNCTION>` parameter is different between the two graphs. 
+
+### Pair 3.
+
+The `<POSITION>` parameter is different between the two graphs. 
+
+## Question 5.
+
+### a.
+
+Plot 2 is I think better. Plot 1 starts at a zero baseline. While it's not horrible to start at zero with a dot plot, it depends more on the context of the message wanted to portray. 
+
+### b 
+
+Plot 1 is in this case better. Plot 2 has too many different levels to color by. So as a result, a few of the colors look really similar to one another. 
+
+
+
+
+

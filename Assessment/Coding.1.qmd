@@ -1,0 +1,28 @@
+---
+title: "Coding Assessment 1"
+author: "Gop Arop"
+format: 
+  html:
+    embed-resources: true
+---
+
+Statement of Integrity: “All work presented is my own, and I have followed all rules for collaboration. I have not used any AI for this assignment.”
+
+
+## Question 1
+```{r}
+library(tidyverse)
+diamonds <- diamonds
+```
+
+```{r}
+ggplot(data = diamonds, aes(x = price)) + geom_histogram(color = "blue", fill = "white") + facet_wrap(~ cut) + theme_minimal()
+```
+
+## Question 2.
+```{r}
+ggplot(data = diamonds, aes(x = price)) + geom_histogram(color = "blue", fill = "white") + facet_wrap(~ cut) + theme(element_rect(color = "darkred"))
+```
+
+
+
