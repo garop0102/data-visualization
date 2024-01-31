@@ -6,7 +6,7 @@ format:
     embed-resources: true
 ---
 
-1. Using the income/voter turnout graph as an example, its valuable to look at data graphically so it'll be easier to identify outliers.
+1. Using the income/voter turnout graph as an example, its valuable to look at data graphically so it'll be easier to identify outliers.`
 
 2. For something that is as serious as the life expectancy of an individual, there seems to be too much artistic style to the graph. 
 

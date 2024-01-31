@@ -21,8 +21,9 @@ ggplot(data = diamonds, aes(x = price)) + geom_histogram(color = "blue", fill = 
 
 ## Question 2.
 ```{r}
-ggplot(data = diamonds, aes(x = price)) + geom_histogram(color = "blue", fill = "white") + facet_wrap(~ cut) + theme(element_rect(color = "darkred"))
+ggplot(data = diamonds, aes(x = price)) + geom_histogram(color = "blue", fill = "white") + facet_wrap(~ cut) + theme(axis.line.x = element_line(size = 2), axis.line.y = element_line(size = 2))
 ```
 
-
+## Question 3.
+https://github.com/garop0102/data-visualization
 
